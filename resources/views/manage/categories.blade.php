@@ -94,7 +94,6 @@
                     <table id="dataTable" class="table table-hover">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
                             <th scope="col">{{__('Name')}}</th>
                             <th scope="col">{{__('Description')}}</th>
                             <th scope="col">{{__('Parent category')}}</th>
@@ -104,7 +103,6 @@
                         <tbody>
                         @foreach($categories as $category)
                         <tr>
-                            <th scope="row">{{ $category->id }}</th>
                             <td>{{ $category->category_name }}</td>
                             <td>{{ $category->cat_description }}</td>
                             <td>@if($category->parent_category !== 0) {{ $category->parent->category_name }} @else {{__('Is parent')}} @endif</td>

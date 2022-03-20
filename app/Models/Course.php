@@ -11,6 +11,7 @@ class Course extends Model
 
     protected $guarded = [];
 
+    protected $with = ['category','topics','expert'];
 
     public function category(){
         return $this->belongsTo(CourseCategory::class, 'category_id');

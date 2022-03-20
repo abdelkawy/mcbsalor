@@ -55,10 +55,12 @@ class CourseCategoryController extends Controller
     {
         try {
             $courses = Course::all()->where('category_id', '=', request('catid'));
+            $cat = CourseCategory::all()->where('id', '=', request('catid'));
+            $name = $cat[0]->category_name;
             if ($courses->count() <= 0) {
                 CourseCategory::where('id', '=', request('catid'))->delete();
-                Log::create(['user_id' => auth()->id(), 'action' => 'Delete', 'page' => 'categories', 'ip' => request()->ip(), 'message' => 'User deleted a category (' . request('catid') . ')']);
-                return redirect(route('manage_categories', app()->getLocale()))->with('success', 'The category has been deleted');
+                Log::create(['user_id' => auth()->id(), 'action' => 'Delete', 'page' => 'categories', 'ip' => request()->ip(), 'message' => 'User deleted a category (' . $name . ')']);
+                return redirect(route('manage_categories', app()->getLocale()))->with('success', 'The category ['.$name.'] has been deleted');
             }
             return back()->with('fail', 'The category cannot be deleted, because it has courses');
         } catch (QueryException $exception) {

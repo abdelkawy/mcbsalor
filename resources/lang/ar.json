@@ -82,7 +82,7 @@
     "Login": "تسجيل الدخول",
     "Search": "البحث",
     "You can start browsing the available courses or you can login if you a member of administration team.": "يمكنك البدء في تصفح المقررات المتاحة أو يمكنك تسجيل الدخول إذا كنت عضوًا في فريق الإدارة.",
-    "Learning Objects Repository (LOR) make learning resources more accessible through the creation and availability of shared information resources.": "يجعل مستودع مصادر التعلم (LOR) مصادر التعلم أكثر سهولة من خلال إنشاء مصادر معلومات مشتركة وإتاحتها للجميع.",
+    "Learning Objects Repository (LOR) make learning resources more accessible through the creation and availability of shared information resources.": "يجعل الوصول لمصادر التعلم أكثر سهولة من خلال إنشاء مصادر معلومات مشتركة وإتاحتها للجميع.",
     "LOR Learning Repository is an online library of learning objects and associated files. It is a combination of topics, modules, and assets that have been tagged with specific metadata to make them accessible to multiple users.": "مستودع LOR التعليمي عبارة عن مكتبة على الإنترنت تضم مصادر التعلم والملفات المرتبطة بها. إنها مجموعة من الموضوعات والوحدات التعليمية والمصادر التي تم تصنيفها وجعلها في متناول العديد من المستخدمين.",
     "Start now": "ابدأ الآن",
     "Manage courses": "إدارة المقررات",
@@ -90,7 +90,7 @@
     "You can add, edit and delete categories.": "يمكنك إضافة وتحرير وحذف التصنيفات.",
     "You can add, edit and delete courses, topics and learning objects.": "يمكنك إضافة وتحرير وحذف المقررات والموضوعات والوحدات التعليمية.",
     "Export to Spreadsheet": "تصدير إلى جدول بيانات",
-    "Performance chart": "مؤشر الأداء",
+    "Performance chart for this month": "مؤشر الأداء لهذا الشهر",
     "Chart data": "بيانات الرسم البياني",
     "Users": "المستخدمون",
     "Manage users": "ادارة المستخدمين",
@@ -115,5 +115,13 @@
     "Show topics": "عرض الموضوعات",
     "Show objects": "عرض المصادر (الوحدات التعليمية)",
     "File link": "رابط الملف",
-    "Click here to download": "اضغط هنا لتنزيل الملف"
+    "Click here to download": "اضغط هنا لتنزيل الملف",
+    "Save user data": "حفظ بيانات المستخدم",
+    "Department": "القسم",
+    "Employer/Department": "المؤسسة/القسم",
+    "Posts": "الاضافات",
+    "Changes": "التعديلات",
+    "Date": "التاريخ",
+    "Account details": "بيانات الحساب",
+    "Username": "اسم المستخدم"
 }

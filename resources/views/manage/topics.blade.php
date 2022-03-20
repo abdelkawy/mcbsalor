@@ -103,27 +103,25 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        <table class="table table-hover">
+                        <table id="dataTable" class="table table-hover">
                             <thead>
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">{{__('Name')}}</th>
                                 <th scope="col">{{__('Description')}}</th>
                                 <th scope="col">{{__('Course')}}</th>
-                                <th width="300px"> ...</th>
+                                <th width="330px"> ...</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($topics as $topic)
                                 <tr>
-                                    <th scope="row">{{ $topic->id }}</th>
                                     <td>{{ $topic->topic_name }}</td>
                                     <td>{{ $topic->topic_summery }}</td>
                                     <td>{{ $topic->course->course_name }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                             <a class="btn btn-outline-success"
-                                               href="{{ route('manage_objects', app()->getLocale()) }}?crsid={{ $topic->course_id }}&tid={{ $topic->id }}">{{__('Learning Objects')}}</a>
+                                               href="{{ route('manage_objects', app()->getLocale()) }}?crsid={{ $topic->course_id }}&tid={{ $topic->id }}">{{__('Learning Objects')}} <span class="badge bg-secondary">{{$topic->objects->count()}}</span></a>
                                             <a class="btn btn-outline-warning"
                                                href="{{ route('topic_update', app()->getLocale()) }}?tid={{ $topic->id }}">{{__('Update')}}</a>
                                             <button class="btn btn-outline-danger"

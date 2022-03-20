@@ -1,9 +1,13 @@
 <x-app-layout>
-    <x-slot name="header"><nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <x-slot name="header">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="text-primary" href="{{ route('manage_courses', app()->getLocale()) }}">{{__('Courses')}}</a></li>
                 <li class="breadcrumb-item"><a class="text-primary"
-                                               href="{{ route('manage_topics', app()->getLocale()) }}?crsid={{ request('crsid') }}">{{__('Topics')}}</a></li>
+                                               href="{{ route('manage_courses', app()->getLocale()) }}">{{__('Courses')}}</a>
+                </li>
+                <li class="breadcrumb-item"><a class="text-primary"
+                                               href="{{ route('manage_topics', app()->getLocale()) }}?crsid={{ request('crsid') }}">{{__('Topics')}}</a>
+                </li>
                 <li class="breadcrumb-item active" aria-current="page">{{ __('Learning Objects') }}</li>
             </ol>
         </nav>
@@ -80,7 +84,8 @@
                                     </div>
                                     <div class="col">
                                         <label for="object_file" class="form-label">{{__('Upload file')}}</label>
-                                        <input type="file" class="form-control" id="object_file" name="object_file" value="{{ old('object_file') }}">
+                                        <input type="file" class="form-control" id="object_file" name="object_file"
+                                               value="{{ old('object_file') }}">
                                         @error('object_file')
                                         <p class="px-3 text-danger text-xs">{{ $message }}</p>
                                         @enderror
@@ -191,21 +196,22 @@
                                 @enderror
                             </div>
                             <div class="row g-lg-2 m-3">
-                            <div class="col">
-                                <label for="object_url" class="form-label">{{__('Object URL')}}</label>
-                                <input type="text" class="form-control" id="object_url" name="object_url"
-                                       value="{{ old('object_url') }}">
-                                @error('object_url')
-                                <p class="px-3 text-danger text-xs">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <label for="object_file" class="form-label">{{__('Upload file')}}</label>
-                                <input type="file" class="form-control" id="object_file" name="object_file" value="{{ old('object_file') }}">
-                                @error('object_file')
+                                <div class="col">
+                                    <label for="object_url" class="form-label">{{__('Object URL')}}</label>
+                                    <input type="text" class="form-control" id="object_url" name="object_url"
+                                           value="{{ old('object_url') }}">
+                                    @error('object_url')
                                     <p class="px-3 text-danger text-xs">{{ $message }}</p>
-                                @enderror
-                            </div>
+                                    @enderror
+                                </div>
+                                <div class="col">
+                                    <label for="object_file" class="form-label">{{__('Upload file')}}</label>
+                                    <input type="file" class="form-control" id="object_file" name="object_file"
+                                           value="{{ old('object_file') }}">
+                                    @error('object_file')
+                                    <p class="px-3 text-danger text-xs">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="row g-lg-3 m-3">
                                 <div class="col">
@@ -265,30 +271,38 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        <table class="table table-hover">
+                        <table id="dataTable" class="table table-hover">
                             <thead>
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">{{__('Name')}}</th>
                                 <th scope="col">{{__('Type')}}</th>
                                 <th scope="col">{{__('Format')}}</th>
                                 <th scope="col">{{__('License')}}</th>
+                                <th scope="col">{{__('File link')}}</th>
                                 <th width="200px"> ...</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($objects as $object)
                                 <tr>
-                                    <th scope="row">{{ $object->id }}</th>
                                     <td>{{ $object->object_name }}</td>
                                     <td>{{__($object->object_type)}}</td>
-                                    <td>{{__(ucfirst(trans($object->object_format)))}} <i class="fa-solid fa-file-{{ $object->object_format }}"></i></td>
+                                    <td>{{__(ucfirst(trans($object->object_format)))}} <i
+                                            class="fa-solid fa-file-{{ $object->object_format }}"></i></td>
                                     <td>{{__($object->object_license)}}</td>
+                                    <td>
+                                        @if(isset($object->object_file))
+                                            <a href="{{ asset('uploads/objects/'.$object->object_file) }}">{{ $object->object_file }}</a>
+                                        @elseif(isset($object->object_url))
+                                            <a href="{{ $object->object_url }}">{{ $object->object_url }}</a>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                             <a class="btn btn-outline-warning"
-                                               href="{{ route('object_update', app()->getLocale()) }}?oid={{ $object->id }}">{{__('Update')}}</a>
-                                            <button class="btn btn-outline-danger" onclick="deleteAction('{{ route('object_delete', app()->getLocale()) }}?crsid={{ $object->course_id }}&tid={{ $object->topic_id }}&oid={{ $object->id }}')">{{__('Delete')}}</button>
+                                               href="{{ route('object_update', app()->getLocale()) }}?crsid={{ $object->course_id }}&oid={{ $object->id }}">{{__('Update')}}</a>
+                                            <button class="btn btn-outline-danger"
+                                                    onclick="deleteAction('{{ route('object_delete', app()->getLocale()) }}?crsid={{ $object->course_id }}&tid={{ $object->topic_id }}&oid={{ $object->id }}')">{{__('Delete')}}</button>
 
                                         </div>
                                     </td>

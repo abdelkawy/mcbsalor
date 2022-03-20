@@ -130,7 +130,7 @@
                                 <select class="form-select" aria-label="Default user" id="course_sm_expert" name="course_sm_expert">
                                     <option value="-1" @if(!old('course_sm_expert')) selected @endif>{{__('Select user')}}</option>
                                     @foreach($users as $user)
-                                        <option value="{{ $user->id }}" @if($user->id == old('course_sm_expert')) selected @endif >{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}" @if($user->id == auth()->id()) selected @endif >{{ $user->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('course_sm_expert')
@@ -167,7 +167,7 @@
                             <th scope="col">{{__('Name')}}</th>
                             <th scope="col">{{__('Category')}}</th>
                             <th scope="col">{{__('SME')}}</th>
-                            <th width="250px"> ... </th>
+                            <th width="260px"> ... </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -179,7 +179,7 @@
                                 <td>@if(isset($course->course_sm_expert)) {{ $course->expert->name }} @endif</td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                        <a class="btn btn-outline-success" href="{{ route('manage_topics', app()->getLocale()) }}?crsid={{ $course->id }}">{{__('Topics')}}</a>
+                                        <a class="btn btn-outline-success" href="{{ route('manage_topics', app()->getLocale()) }}?crsid={{ $course->id }}">{{__('Topics')}} <span class="badge bg-secondary">{{$course->topics->count()}}</span></a>
                                         <a class="btn btn-outline-warning" href="{{ route('course_update', app()->getLocale()) }}?crsid={{ $course->id }}">{{__('Update')}}</a>
                                         <button class="btn btn-outline-danger" onclick="deleteAction('{{ route('course_delete', app()->getLocale()) }}?crsid={{ $course->id }}')">{{__('Delete')}}</button>
 

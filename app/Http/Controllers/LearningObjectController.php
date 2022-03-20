@@ -43,7 +43,7 @@ class LearningObjectController extends Controller
             $courses = Course::all()->where('course_sm_expert', '=', auth()->id());
         return view('manage.objects', [
             'object' => $object,
-            'topics' => Topic::all()->where('course_id', '=', $object[0]['course_id']),
+            'topics' => Topic::all()->where('course_id', '=', request('crsid')),
             'courses' => $courses
         ]);
     }
@@ -73,9 +73,10 @@ class LearningObjectController extends Controller
     {
         try {
             $object = LearningObject::all()->where('id', '=', request('oid'));
+            $name = $object[0]->object_name;
             if (LearningObject::where('id', '=', request('oid'))->delete()) {
-                Log::create(['user_id' => auth()->id(), 'action' => 'Update', 'page' => 'objects', 'ip' => request()->ip(), 'message' => 'User deleted an object (' . $object[0]->object_name . ')']);
-                return redirect(route('manage_objects', [app()->getLocale(), 'crsid' => request('crsid'), 'tid' => request('tid')]))->with('success', 'The object has been deleted');
+                Log::create(['user_id' => auth()->id(), 'action' => 'Update', 'page' => 'objects', 'ip' => request()->ip(), 'message' => 'User deleted an object (' . $name . ')']);
+                return redirect(route('manage_objects', [app()->getLocale(), 'crsid' => request('crsid'), 'tid' => request('tid')]))->with('success', 'The object ['.$name.'] has been deleted');
             }
             return back()->with('fail', 'The object is not deleted');
         } catch (QueryException $exception) {
@@ -93,7 +94,7 @@ class LearningObjectController extends Controller
             'object_type' => 'required|max:50',
             'object_format' => 'required|max:50',
             'object_license' => 'required|max:100',
-            'object_file' => 'nullable|mimes:pdf,doc,docx,mp4,mp3,wav,gif,mpeg,mov,xls,xlsx,ppt,pptx|max:5020',
+            'object_file' => 'nullable|mimes:pdf,doc,docx,mp4,mp3,wav,gif,mpeg,mov,xls,xlsx,ppt,pptx|max:20000',
             'object_summery' => 'nullable'
         ]);
     }

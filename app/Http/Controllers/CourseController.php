@@ -51,13 +51,13 @@ class CourseController extends Controller
 
         if (isset($formData['course_image'])) {
             $fileName = $formData['course_code'] . '.' . request('course_image')->extension();
-            request('course_image')->move('/var/www/html/lor/uploads/courses/', $fileName);
+            request('course_image')->storeAs('/var/www/html/lor/uploads/courses/', $fileName);
             $formData['course_image'] = $fileName;
         }
         try {
             if (Course::where('id', request('course_id'))->update($formData)) {
                 Log::create(['user_id' => auth()->id(), 'action' => 'Update', 'page' => 'courses', 'ip' => request()->ip(), 'message' => 'User modified a course (' . $formData['course_code']  . ': ' . $formData['course_name'] . ')']);
-                return redirect(route('manage_courses', app()->getLocale()))->with('success', 'The new course (' . $formData['course_code']  . ': ' . $formData['course_name'] . ') has been updated');
+                return redirect(route('manage_courses', app()->getLocale()))->with('success', 'The course (' . $formData['course_code']  . ': ' . $formData['course_name'] . ') has been updated');
             }
             return back()->withInput();
         } catch (QueryException $exception) {
@@ -68,17 +68,20 @@ class CourseController extends Controller
 
     public function publishCourse()
     {
-
         $formData = array('is_publish' => 1);
-        $course = Course::all()->where('id', request('crsid'));
+        $course = Course::all()->where('id', '=', request('crsid'));
+        foreach($course as $data){
+        $code = $data->course_code;
+        $name = $data->course_name;
+        }
         try {
-            if (Course::where('id', request('crsid'))->update($formData)) {
-                Log::create(['user_id' => auth()->id(), 'action' => 'Publish', 'page' => 'courses', 'ip' => request()->ip(), 'message' => 'User published a course (' . $course[0]->course_code . ': ' . $course[0]->course_name . ')']);
-                return redirect(route('courses', app()->getLocale()))->with('success', 'The new course (' . request('crsid') . ': ' . $course[0]->course_name . ') has been published');
+            if (Course::where('id', '=', request('crsid'))->update($formData)) {
+                Log::create(['user_id' => auth()->id(), 'action' => 'Publish', 'page' => 'courses', 'ip' => request()->ip(), 'message' => 'User published a course (' . $code . ': ' . $name . ')']);
+                return redirect(route('courses', app()->getLocale()))->with('success', 'The course (' . $code . ': ' . $name . ') has been published');
             }
             return back();
         } catch (QueryException $exception) {
-            return redirect(route('courses', app()->getLocale()))->with('fail', 'Failed to publish the course (' . request('crsid'). ': ' . $course[0]->course_name . ')');
+            return redirect(route('courses', app()->getLocale()))->with('fail', 'Failed to publish the course (' . $code . ': ' . $name . ')');
         }
 
     }
@@ -88,13 +91,17 @@ class CourseController extends Controller
         $course = Course::all()->where('id', '=', request('crsid'));
         //dd($course);
         $topics = Topic::all()->where('course_id', '=', request('crsid'));
+        foreach($course as $data){
+            $code = $data->course_code;
+            $name = $data->course_name;
+        }
         try {
             if ($topics->count() <= 0) {
                 Course::where('id', '=', request('crsid'))->where('course_sm_expert', '=', auth()->id())->delete();
-                Log::create(['user_id' => auth()->id(), 'action' => 'Delete', 'page' => 'courses', 'ip' => request()->ip(), 'message' => 'User deleted a course (' . $course[0]->course_code . ': ' . $course[0]->course_name . ')']);
-                return redirect(route('manage_courses', app()->getLocale()))->with('success', 'The course (' . request('crsid'). ': ' . $course[0]->course_name . ') has been deleted');
+                Log::create(['user_id' => auth()->id(), 'action' => 'Delete', 'page' => 'courses', 'ip' => request()->ip(), 'message' => 'User deleted a course (' . $code . ': ' . $name . ')']);
+                return redirect(route('manage_courses', app()->getLocale()))->with('success', 'The course (' . $code . ': ' . $name . ') has been deleted');
             }
-            return back()->with('fail', 'The course (' . request('crsid'). ': ' . $course[0]->course_name . ') cannot be deleted, because is has topics');
+            return back()->with('fail', 'The course (' . $code . ': ' . $name . ') cannot be deleted, because is has topics');
         } catch (QueryException $exception) {
             return back()->with('fail', 'The course has not been deleted');
         }

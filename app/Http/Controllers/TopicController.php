@@ -64,10 +64,11 @@ class TopicController extends Controller
         try {
             $objects = LearningObject::all()->where('course_id', '=', request('crsid'))->where('topic_id', '=', request('tid'));
             $topic = Topic::all()->where('id', '=', request('tid'));
+            $name = $topic[0]->topic_name;
             if ($objects->count() <= 0) {
                 Topic::where('id', '=', request('tid'))->delete();
-                Log::create(['user_id' => auth()->id(), 'action' => 'Delete', 'page' => 'topics', 'ip' => request()->ip(), 'message' => 'User deleted a topic (' . $topic[0]->topic_name . ')']);
-                return redirect(route('manage_topics', [app()->getLocale(), 'crsid' => request('crsid')]))->with('success', 'The topic has been deleted');
+                Log::create(['user_id' => auth()->id(), 'action' => 'Delete', 'page' => 'topics', 'ip' => request()->ip(), 'message' => 'User deleted a topic (' . $name . ')']);
+                return redirect(route('manage_topics', [app()->getLocale(), 'crsid' => request('crsid')]))->with('success', 'The topic ['.$name.'] has been deleted');
             }
             return back()->with('fail', 'The topic cannot be deleted, because it has learning objects');
         } catch (QueryException $exception) {
